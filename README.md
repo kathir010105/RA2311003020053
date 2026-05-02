@@ -10,6 +10,20 @@ A modern, responsive, production-ready React application built for viewing and f
 - **Custom Logging Middleware**: A centralized logger tracks UI events, state changes, and API requests/responses in the console.
 - **Clean Architecture**: Built with Vite, utilizing reusable hooks (`useNotifications`), modular CSS (`.module.css`), and isolated services.
 
+## Application Screenshots
+
+### Dashboard Overview
+![Dashboard Overview](screenshots/dashboard_all.png)
+
+### Category: Placement
+![Placement Notifications](screenshots/dashboard_placement.png)
+
+### Category: Events
+![Event Notifications](screenshots/dashboard_events.png)
+
+### Category: Results
+![Result Notifications](screenshots/dashboard_results.png)
+
 ## Setup Instructions
 
 1. **Install Dependencies**
