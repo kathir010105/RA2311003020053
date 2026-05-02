@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { fetchNotifications } from '../services/api';
 import { prioritySort } from '../utils/prioritySort';
-import { logger } from '../middleware/logger';
+import { Log } from '../middleware/logger';
 
 export const useNotifications = () => {
   const [data, setData] = useState([]);
@@ -22,16 +22,16 @@ export const useNotifications = () => {
       setIsLoading(true);
       setError(null);
       try {
-        logger.logInfo('NOTIFICATIONS_FETCH_START', { page: currentPage, category: categoryFilter });
+        Log("frontend", "info", "hook", `Fetching notifications for page ${currentPage} and category ${categoryFilter}`);
         const result = await fetchNotifications(currentPage, itemsPerPage, categoryFilter);
         
         setData(result);
         setHasMore(result.length === itemsPerPage);
         
-        logger.logInfo('NOTIFICATIONS_FETCH_SUCCESS', { count: result.length });
+        Log("frontend", "info", "hook", `Notifications fetch success, count: ${result.length}`);
       } catch (err) {
         setError('Failed to fetch notifications. Please try again.');
-        logger.logError('NOTIFICATIONS_FETCH_ERROR', { error: err.message });
+        Log("frontend", "error", "hook", `Notifications fetch error: ${err.message}`);
       } finally {
         setIsLoading(false);
       }
@@ -44,18 +44,18 @@ export const useNotifications = () => {
   const handleSearch = (term) => {
     setSearchTerm(term);
     // Local search doesn't change current server page
-    logger.logInfo('FILTER_SEARCH_CHANGED', { term });
+    Log("frontend", "info", "hook", `Search filter changed to: ${term}`);
   };
 
   const handleCategoryFilter = (category) => {
     setCategoryFilter(category);
     setCurrentPage(1); // Reset to first page on filter change
-    logger.logInfo('FILTER_CATEGORY_CHANGED', { category });
+    Log("frontend", "info", "hook", `Category filter changed to: ${category}`);
   };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    logger.logInfo('PAGINATION_CHANGED', { newPage: pageNumber });
+    Log("frontend", "info", "hook", `Pagination changed to page ${pageNumber}`);
   };
 
   // Derived state: sorted and filtered notifications for the current page

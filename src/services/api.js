@@ -1,4 +1,4 @@
-import { logger } from '../middleware/logger';
+import { Log } from '../middleware/logger';
 import { authenticate } from './auth';
 
 export const fetchNotifications = async (page = 1, limit = 10, type = 'All') => {
@@ -19,7 +19,7 @@ export const fetchNotifications = async (page = 1, limit = 10, type = 'All') => 
     // Authenticate before calling API
     const token = await authenticate();
 
-    logger.logApiRequest(endpoint, 'GET', { headers: { Authorization: `Bearer ***` } });
+    Log("frontend", "info", "api", `API Request: GET ${endpoint}`);
 
     const response = await fetch(endpoint, {
       method: 'GET',
@@ -34,7 +34,7 @@ export const fetchNotifications = async (page = 1, limit = 10, type = 'All') => 
     }
 
     const data = await response.json();
-    logger.logApiResponse(endpoint, response.status, { count: data.notifications?.length || 0 });
+    Log("frontend", "info", "api", `API Response: ${response.status} for ${endpoint} count: ${data.notifications?.length || 0}`);
     
     // Map the PascalCase response to camelCase expected by our UI
     return (data.notifications || []).map(notif => ({
@@ -44,7 +44,7 @@ export const fetchNotifications = async (page = 1, limit = 10, type = 'All') => 
       timestamp: notif.Timestamp
     }));
   } catch (error) {
-    logger.logError('API_REQUEST_FAILED', { endpoint, error: error.message });
+    Log("frontend", "error", "api", `API Request failed for ${endpoint}: ${error.message}`);
     throw error;
   }
 };

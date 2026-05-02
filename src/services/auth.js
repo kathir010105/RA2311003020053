@@ -1,10 +1,10 @@
-import { logger } from '../middleware/logger';
+import { Log } from '../middleware/logger';
 
 export const authenticate = async () => {
   const token = import.meta.env.VITE_ACCESS_TOKEN;
   
   if (!token) {
-    logger.logError('AUTH_FAILED', { error: 'Missing VITE_ACCESS_TOKEN in environment variables.' });
+    Log("frontend", "error", "auth", "Missing VITE_ACCESS_TOKEN in environment variables.");
     throw new Error('Missing VITE_ACCESS_TOKEN in environment variables.');
   }
 
@@ -12,5 +12,5 @@ export const authenticate = async () => {
 };
 
 export const clearToken = () => {
-  logger.logInfo('TOKEN_CLEARED', { message: 'Access token cleared (no-op as token is in env)' });
+  Log("frontend", "info", "auth", "Access token cleared (no-op as token is in env)");
 };

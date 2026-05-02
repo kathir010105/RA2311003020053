@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNotifications } from '../../hooks/useNotifications';
-import { logger } from '../../middleware/logger';
+import { Log } from '../../middleware/logger';
 import SearchFilter from '../../components/SearchFilter/SearchFilter';
 import NotificationList from '../../components/NotificationList/NotificationList';
 import Pagination from '../../components/Pagination/Pagination';
@@ -21,10 +21,10 @@ const Dashboard = () => {
   } = useNotifications();
 
   useEffect(() => {
-    logger.logInfo('DASHBOARD_MOUNTED', { message: 'Dashboard component loaded' });
+    Log('frontend', 'info', 'page', 'Dashboard component loaded');
     
     return () => {
-      logger.logInfo('DASHBOARD_UNMOUNTED', { message: 'Dashboard component unloaded' });
+      Log('frontend', 'info', 'page', 'Dashboard component unloaded');
     };
   }, []);
 

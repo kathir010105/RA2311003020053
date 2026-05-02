@@ -1,57 +1,34 @@
-/**
- * Logger Middleware
- * Provides structured logging for the application.
- */
+export const Log = (stack, level, pkg, message) => {
+  const token = import.meta.env.VITE_ACCESS_TOKEN;
+  
+  // Enforce message length constraints (5-48 chars)
+  let safeMsg = String(message || 'event');
+  if (safeMsg.length < 5) safeMsg = safeMsg.padEnd(5, '.');
+  if (safeMsg.length > 48) safeMsg = safeMsg.substring(0, 45) + '...';
 
-class Logger {
-  log(level, action, status, details) {
-    const timestamp = new Date().toISOString();
-    const logEntry = {
-      timestamp,
-      level,
-      action,
-      status,
-      details,
-    };
+  const payload = { stack, level, package: pkg, message: safeMsg };
 
-    // In a real app, this might send data to a remote logging service.
-    // For now, we log to the console with appropriate formatting.
-    const message = `[${timestamp}] [${level}] ${action} - ${status}`;
+  // Log to console locally
+  const logMethod = console[level] || console.log;
+  logMethod(`[${level.toUpperCase()}] [${pkg}] ${message}`);
 
-    switch (level) {
-      case 'INFO':
-        console.log(message, details);
-        break;
-      case 'WARNING':
-        console.warn(message, details);
-        break;
-      case 'ERROR':
-        console.error(message, details);
-        break;
-      default:
-        console.log(message, details);
-    }
+  if (token) {
+    fetch('http://20.207.122.201/evaluation-service/logs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(async (res) => {
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error(`Log API Error (${res.status}):`, errText);
+      }
+    })
+    .catch(err => {
+      console.error('Failed to send log to server:', err);
+    });
   }
-
-  logInfo(action, details = {}) {
-    this.log('INFO', action, 'SUCCESS', details);
-  }
-
-  logWarning(action, details = {}) {
-    this.log('WARNING', action, 'WARNING', details);
-  }
-
-  logError(action, error = {}) {
-    this.log('ERROR', action, 'FAILED', error);
-  }
-
-  logApiRequest(url, method = 'GET', details = {}) {
-    this.log('INFO', 'API_REQUEST', 'PENDING', { url, method, ...details });
-  }
-
-  logApiResponse(url, status, data = {}) {
-    this.log('INFO', 'API_RESPONSE', 'SUCCESS', { url, status, data });
-  }
-}
-
-export const logger = new Logger();
+};
