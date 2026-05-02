@@ -29,33 +29,42 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>Notifications</h1>
-      </header>
-      
-      <main className={styles.content}>
-        <SearchFilter 
-          searchTerm={searchTerm}
-          onSearchChange={handleSearch}
-          categoryFilter={categoryFilter}
-          onCategoryChange={handleCategoryFilter}
-        />
+    <div className={styles.appContainer}>
+
+      {/* Main Dashboard Content */}
+      <div className={styles.mainContent}>
+        <header className={styles.header}>
+          <div className={styles.headerLeft}>
+            <h1 className={styles.title}>Notifications</h1>
+            <p className={styles.subtitle}>Welcome back. Here are your latest updates.</p>
+          </div>
+          
+          <div className={styles.headerRight}>
+            <SearchFilter 
+              searchTerm={searchTerm}
+              onSearchChange={handleSearch}
+              categoryFilter={categoryFilter}
+              onCategoryChange={handleCategoryFilter}
+            />
+          </div>
+        </header>
         
-        <NotificationList 
-          notifications={notifications}
-          isLoading={isLoading}
-          error={error}
-        />
-        
-        {!isLoading && !error && (
-          <Pagination 
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
+        <main className={styles.contentBody}>
+          <NotificationList 
+            notifications={notifications}
+            isLoading={isLoading}
+            error={error}
           />
-        )}
-      </main>
+          
+          {!isLoading && !error && (
+            <Pagination 
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
+        </main>
+      </div>
     </div>
   );
 };

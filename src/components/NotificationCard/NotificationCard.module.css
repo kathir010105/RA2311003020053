@@ -1,26 +1,29 @@
 .card {
   display: flex;
-  background-color: var(--color-surface);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
   overflow: hidden;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-  border: 1px solid var(--color-border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: var(--spacing-sm);
+  background-color: var(--color-surface);
 }
 
 .card:hover {
-  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-.indicator {
-  width: 6px;
-  flex-shrink: 0;
+.card.placement {
+  background-color: var(--color-placement-bg);
 }
 
-.indicator.placement { background-color: var(--color-placement); }
-.indicator.event { background-color: var(--color-event); }
-.indicator.result { background-color: var(--color-result); }
+.card.event {
+  background-color: var(--color-event-bg);
+}
+
+.card.result {
+  background-color: var(--color-result-bg);
+}
 
 .content {
   padding: var(--spacing-md) var(--spacing-lg);
@@ -31,37 +34,37 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
 }
 
 .badge {
   font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.25rem 0.5rem;
-  border-radius: var(--radius-sm);
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.badge.placement { background-color: #d1fae5; color: #065f46; }
-.badge.event { background-color: #fef3c7; color: #92400e; }
-.badge.result { background-color: #e0e7ff; color: #3730a3; }
+.badge.placement { color: var(--color-placement-text); }
+.badge.event { color: var(--color-event-text); }
+.badge.result { color: var(--color-result-text); }
 
 .time {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: var(--color-text-muted);
+  font-weight: 500;
 }
 
 .message {
   font-size: 1rem;
   color: var(--color-text-main);
   line-height: 1.5;
+  font-weight: 500;
 }
 
 @media (max-width: 640px) {
   .header {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
   }
 }
