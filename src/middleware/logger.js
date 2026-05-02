@@ -13,7 +13,7 @@ export const Log = (stack, level, pkg, message) => {
   logMethod(`[${level.toUpperCase()}] [${pkg}] ${message}`);
 
   if (token) {
-    fetch('http://20.207.122.201/evaluation-service/logs', {
+    fetch('/evaluation-service/logs', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -3,8 +3,8 @@ import { authenticate } from './auth';
 
 export const fetchNotifications = async (page = 1, limit = 10, type = 'All') => {
   // Construct the URL with query parameters
-  const baseUrl = 'http://20.207.122.201/evaluation-service/notifications';
-  const url = new URL(baseUrl);
+  const baseUrl = '/evaluation-service/notifications';
+  const url = new URL(baseUrl, window.location.origin);
   
   url.searchParams.append('page', page);
   url.searchParams.append('limit', limit);
